@@ -21,7 +21,7 @@ import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 //   }
 // }
 
-function Todos({ toDoList, onDone }) {
+function Todos({ toDoList, onDone, onClickIcon }) {
   console.log("whole", toDoList);
   return (
     <ul className="todo-list">
@@ -46,6 +46,7 @@ function Todos({ toDoList, onDone }) {
               className="close-icon"
               style={{ color: "#eb9e67" }}
               icon={faXmark}
+              onClick={() => {onClickIcon(index)}}
             />
           </li>
         );
@@ -58,22 +59,16 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      toDos: [
-        {
-          content: "sleeping",
-          isDone: true,
-        },
-        {
-          content: "rthrththth",
-          isDone: true,
-        },
-        {
-          content: "bgrbrgb",
-          isDone: false,
-        },
-      ],
-      textInput: "",
+      toDos: [],
+      textInput: ""
     };
+  }
+
+  handleClickIcon = (index) => {
+    const oldTodos = this.state.toDos;
+    const newTodos = [...oldTodos];
+    newTodos.splice(index, 1);
+    this.setState({toDos: newTodos})
   }
 
   handleIsDoneCheck = (isDone, todo, index) => {
@@ -110,8 +105,8 @@ class App extends React.Component {
     return (
       <div className="container">
         <h1>
-          <span style={{ color: "#6db07e" }}>T</span>
-          <span style={{ color: "#e38686" }}>O</span>
+          <span style={{ color: "#6db07e" }}>TO</span>
+          <span style={{ color: "#e38686" }}></span>
           <span style={{ color: "#eb9e67" }}>D</span>
           <span style={{ color: "#6db07e" }}>O</span>
           <span> </span>
@@ -137,7 +132,7 @@ class App extends React.Component {
               icon={faPlus}
             />
           </div>
-          <Todos toDoList={this.state.toDos} onDone={this.handleIsDoneCheck} />
+          <Todos toDoList={this.state.toDos} onDone={this.handleIsDoneCheck} onClickIcon={this.handleClickIcon}/>
         </form>
       </div>
     );
